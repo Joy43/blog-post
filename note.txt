@@ -1,0 +1,16 @@
+
+## https://dev.to/shafayat/-express-typescript-eslint-prettiersetup-5fhg ##
+
+# npm init 
+# npm install mongoose
+# npm install typescript --save-dev
+# npm install express
+# npm install cors
+# npm install dotenv --save
+# tsc -init
+#  "rootDir": "./src",  
+# "outdir":""./dist"
+# npm i --save-dev @types/express
+#   "build": "tsc",
+# npm i -D eslint@9.14.0 @eslint/js @types/eslint__js typescript typescript-eslint
+# npm i -D --exact prettier
