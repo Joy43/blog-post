@@ -7,8 +7,7 @@ export type TUser = {
   status: 'in-progress' | 'blocked';
   isBlocked: boolean;
   isDeleted: boolean;
-  createdAt?: Date; 
-  updatedAt?: Date;
+ 
 };
 
   
