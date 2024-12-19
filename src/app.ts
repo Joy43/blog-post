@@ -1,11 +1,25 @@
-import express from 'express'
+import cors from 'cors';
+import express, { Request, Response } from 'express';
+
+import router from './app/routes';
+import config from './app/config';
+
+
 const app = express()
-const port = 3000
+// parsers api
+app.use(express.json());
+app.use(cors());
+// -----api end point--------
+app.use('/api', router);
 
-app.get('/', (_req: any, res: { send: (arg0: string) => void }) => {
-  res.send('Hello World!')
-})
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+// -----root api endpoint------
+app.get('/', (req: Request, res: Response) => {
+  res.send({
+    status: true,
+    message: 'blog_post Server is running successfully 🏃🏽‍♂️➡️',
+  });
+});
+
+export default app;
+
