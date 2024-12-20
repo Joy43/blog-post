@@ -8,7 +8,7 @@ router.post(
    validateRequest(UserValidation.userValidationSchema),
    userController.createUser
 )
-router.get('/:userId',userController.getUser)
+router.get('/',userController.getUser)
 router.get('/:userId', userController.getSingleUser)
 router.put('/:userId', userController.updateUser)
 router.delete('/:userId', userController.deleteUser)

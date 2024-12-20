@@ -1,3 +1,5 @@
+import { USER_ROLE } from "./user.contant";
+
 export type TUser = {
   id: string;
   name: string;
@@ -9,5 +11,5 @@ export type TUser = {
   isDeleted: boolean;
  
 };
-
+export type TUserRole = keyof typeof USER_ROLE;
   
