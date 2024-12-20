@@ -24,12 +24,14 @@ const blogSchema = new Schema<Tblog>(
         },
        
     },
-    // Automatically adds `createdAt` and `updatedAt` fields
+   /* 
+     Automatically adds `createdAt` and `updatedAt` fields
+   */
     {
         timestamps: true, 
     }
 );
 
 // Export the model for access another component
-const Blog = model<Tblog>("Car", blogSchema);
+const Blog = model<Tblog>("Blog", blogSchema);
 export default Blog;

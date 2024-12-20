@@ -1,47 +1,61 @@
+import AppError from "../../errors/AppError";
 import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
-import { TLoginUser } from "./auth.interface";
+
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
+import httpStatus from 'http-status-codes';
 
 // ---------- register-------
 const register=async(payload:TUser)=>{
     const result=await User.create(payload);
 return result;
 }
-// ----------login-------
+/* 
+#######-----------------------------######
+            login
+#####--------------------------------#######
+*/
 const login = async (payload: { email: string; password: string }) => {
     // checking user is exist
     const user = await User.findOne({ email: payload?.email }).select('+password');
   
     if (!user) {
-      throw new Error('This user is not found !')
+      throw new AppError(httpStatus.NOT_FOUND,'This user is not found !')
     }
   
     // checking if the user is blocked
     const status= user?.status
   
     if (status === 'blocked') {
-      throw new Error('This user is blocked ! !')
+      throw new AppError(httpStatus.FORBIDDEN,'This user is blocked !')
     }
   
-    //checking  password  correct
+  /* 
+  ----------------
+  checking  password  correct
+  ---------------------
+  */
     const isPasswordMatched = await bcrypt.compare(
       payload?.password,
       user?.password
     )
   
     if (!isPasswordMatched) {
-      throw new Error('Wrong Password 😈! provide correct password ')
+      throw new AppError(httpStatus.FORBIDDEN,'Wrong Password 😈! provide correct password ')
     }
   
-    //create token and sent to the  client
+/* 
+---------------------------------------
+create token and sent to the  client
+----------------------------------------
+*/
     const jwtPayload = {
       email: user?.email,
       role: user?.role,
     }
   
-    const token = jwt.sign(jwtPayload, "secret", { expiresIn: '1d' });
+    const token = jwt.sign(jwtPayload, "secret", { expiresIn: '25d' });
   
     return {token, user};
   }

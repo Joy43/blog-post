@@ -1,10 +1,11 @@
-import { boolean, string } from "zod";
+import mongoose, { Types } from "mongoose";
+
 
 export type Tblog={
     id:string,
     title:string,
     content:string,
-    author: object,
+    author:  Types.ObjectId,
     isPublished: boolean,
    
 }
