@@ -20,7 +20,7 @@ const createUser = catchAsync(
       sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'Student is created succesfully',
+        message: 'user is created succesfully',
         data: result,
       });
     });

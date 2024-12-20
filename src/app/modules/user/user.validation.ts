@@ -17,7 +17,7 @@ const userValidationSchema = z.object({
 
     password: z
       .string({
-        required_error: 'Password is required for your safety',
+        required_error: 'Password is required for your safety purpuse',
       })
       .max(40, { message: 'Password can not be more than 40 characters' }),
   }),
