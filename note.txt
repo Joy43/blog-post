@@ -16,3 +16,11 @@
 # npm i -D --exact prettier
 # npm i http-status-codes
 # npm i zod
+
+
+----------es lint-------
+# Install ESLint
+npm install eslint --save-dev
+
+# Initialize ESLint (creates a basic config file)
+npx eslint --init

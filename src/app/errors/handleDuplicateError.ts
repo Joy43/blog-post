@@ -1,6 +1,11 @@
 import { TErrorSources, TGenericErrorResponse } from '../interface/error';
 
-const handleDuplicateError = (err: any): TGenericErrorResponse => {
+interface DuplicateError extends Error {
+  code?: number; 
+  keyValue?: Record<string, string>;
+}
+
+const handleDuplicateError = (err: DuplicateError): TGenericErrorResponse => {
   // Extract value within double quotes using regex
   const match = err.message.match(/"([^"]*)"/);
 
@@ -18,7 +23,7 @@ const handleDuplicateError = (err: any): TGenericErrorResponse => {
 
   return {
     statusCode,
-    message: 'Invalid ID',
+    message: 'Duplicate key error',
     errorSources,
   };
 };

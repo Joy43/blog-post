@@ -1,11 +1,11 @@
 import catchAsync from "../utils/catchAsync";
-import httpStatus, { StatusCodes } from 'http-status-codes';
+import httpStatus from 'http-status-codes';
 import { blogService } from "./blog.service";
 import sendResponse from "../utils/sendResponse";
 import { User } from "../user/user.model";
 import AppError from "../../errors/AppError";
-import Blog from "./blog.model";
-import { ParsedQs } from "qs";
+
+
 
 /* 
 --------------------------------

@@ -1,88 +1,102 @@
-
-
-
 import AppError from "../../errors/AppError";
 import { Tblog } from "./blog.interface";
 import Blog from "./blog.model";
-import httpStatus from 'http-status-codes';
+import httpStatus from "http-status-codes";
 
-const createBlog=async(payload:Tblog)=>{
-const result=await Blog.create(payload);
-const populatedBlog = await Blog.findById(result._id).populate("author");
+type QueryParams = {
+    search?: string;
+    sortBy?: string;
+    sortOrder?: "asc" | "desc";
+    author?: string;
+};
+
+type AuthorType = {
+    _id: string;
+    name: string;
+    email: string;
+    status?: string;
+};
+
+// Create blog
+const createBlog = async (payload: Tblog) => {
+    const result = await Blog.create(payload);
+    const populatedBlog = await Blog.findById(result._id).populate("author");
     return populatedBlog;
+};
 
-}
-
-// --------get all blog------
-const getAllBlogsfromDB = async (query: any) => {
+// Get all blogs
+const getAllBlogsfromDB = async (query: QueryParams) => {
     const { search, sortBy, sortOrder, author } = query;
 
-    // Build the query object
-    const queryObj: any = {};
+    const queryObj: Record<string, unknown> = {};
     if (search) {
         queryObj.$or = [
-            { title: { $regex: search, $options: "i" } }, // Case-insensitive search
-            { content: { $regex: search, $options: "i" } }
+            { title: { $regex: search, $options: "i" } },
+            { content: { $regex: search, $options: "i" } },
         ];
     }
     if (author) {
         queryObj.author = author;
     }
 
-    // Build the sort object
-    const sortObj: any = {};
+    const sortObj: Record<string, 1 | -1> = {};
     if (sortBy) {
-        sortObj[sortBy] = sortOrder === "desc" ? -1 : 1; // Sort order: asc = 1, desc = -1
+        sortObj[sortBy] = sortOrder === "desc" ? -1 : 1;
     }
 
-    // Execute the query with sorting and populate
     const result = await Blog.find(queryObj)
         .sort(sortObj)
-        .populate("author", "name email"); // Populating only selected fields
+        .populate("author", "name email");
 
     return result;
 };
 
-/* 
--------------------------------------
-delete blog
--------------------------------------
-
-*/
-
+// Delete blog
 const deleteBlogFromDB = async (id: string) => {
-    const result = await Blog.findByIdAndDelete(id);
-    if (!result) {
+    const blog = await Blog.findById(id).populate("author");
+    if (!blog) {
         throw new AppError(httpStatus.NOT_FOUND, "Blog not found");
     }
+
+    const author = blog.author as unknown as AuthorType;
+    if (author.status === "blocked") {
+        throw new AppError(httpStatus.FORBIDDEN, "This user is blocked!");
+    }
+
+    const result = await Blog.findByIdAndDelete(id);
     return result;
 };
 
+// Update blog
+const updateBlogIntoDB = async (id: string, payload: Partial<Tblog>) => {
+    const blog = await Blog.findById(id).populate("author", "status");
 
-  /* 
-  ---------------------------
-  update service
-----------------------------
-  */
+    if (!blog) {
+        throw new AppError(httpStatus.NOT_FOUND, "Blog not found");
+    }
 
-  const updateBlogIntoDB = async (
-    id: string,
-    payload: Partial<Tblog>,
-) => {
+    const author = blog.author as unknown as AuthorType;
+    if (author.status === "blocked") {
+        throw new AppError(
+            httpStatus.FORBIDDEN,
+            "This user's status is blocked. Updates are not allowed."
+        );
+    }
+
     const result = await Blog.findOneAndUpdate(
         { _id: id },
         payload,
-        // Returns the updated document
-        { new: true } 
-        // Populate the author field with selected fields
-    ).populate("author", "name email"); 
+        {
+            new: true,
+        }
+    ).populate("author", "name email");
+
     return result;
 };
 
-
-export const blogService={
-createBlog,
-getAllBlogsfromDB,
-deleteBlogFromDB,
-updateBlogIntoDB
-}
+export const blogService = {
+    createBlog,
+    getAllBlogsfromDB,
+    deleteBlogFromDB,
+    updateBlogIntoDB,
+};
