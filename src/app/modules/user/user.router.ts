@@ -3,6 +3,7 @@ import { UserValidation } from './user.validation';
 import validateRequest from '../middlewares/validateRequest';
 import { userController } from './user.controller';
 import auth from '../middlewares/auth';
+import { USER_ROLE } from './user.contant';
 const router=express.Router();
 router.post(
     '/user-create',
@@ -13,5 +14,5 @@ router.post(
 router.get('/',userController.getUser)
 router.get('/:userId', userController.getSingleUser)
 router.put('/:userId', userController.updateUser)
-router.delete('/:userId',auth('admin'), userController.deleteUser)
+router.delete('/:userId',auth(USER_ROLE.admin), userController.deleteUser)
 export const userRouter=router;

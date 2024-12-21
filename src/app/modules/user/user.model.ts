@@ -42,9 +42,9 @@ const userSchema=new Schema<TUser>(
 );
 // ---------password encrioted with hash-----------
 userSchema.pre('save', async function (next) {
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
+
   const user = this; 
-  // hashing password and save into DB
+  // hashing password and save into DATABASE
 
   user.password = await bcrypt.hash(
     user.password,

@@ -5,8 +5,8 @@ import sendResponse from "../utils/sendResponse";
 // -----------
 const blockUser = catchAsync(async (req, res) => {
     const { userId } = req.params;
-
-    const blockedUser = await adminService.blockUser(userId); // Retrieve blocked user data
+// Retrieve blocked user data
+    const blockedUser = await adminService.blockUser(userId); 
 
     sendResponse(res, {
         success: true,

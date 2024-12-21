@@ -21,7 +21,6 @@ const getUser = () => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    //   const result = await User.findOne({name:"habi jabi"})
     const result = yield user_model_1.User.findById(id);
     return result;
 });

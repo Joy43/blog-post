@@ -23,7 +23,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
   if (err instanceof ZodError) {
     const simplifiedError = handleZodError(err);
-    statusCode = simplifiedError?.statusCode ?? 500; // Ensure fallback to 500
+    statusCode = simplifiedError?.statusCode ?? 500; 
     message = simplifiedError?.message ?? 'Validation error';
     errorSources = simplifiedError?.errorSources ?? errorSources;
   } else if (err?.name === 'ValidationError') {

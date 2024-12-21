@@ -19,7 +19,8 @@ const sendResponse_1 = __importDefault(require("../utils/sendResponse"));
 // -----------
 const blockUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.params;
-    const blockedUser = yield admin_service_1.adminService.blockUser(userId); // Retrieve blocked user data
+    // Retrieve blocked user data
+    const blockedUser = yield admin_service_1.adminService.blockUser(userId);
     (0, sendResponse_1.default)(res, {
         success: true,
         message: "User blocked successfully",

@@ -53,9 +53,8 @@ const userSchema = new mongoose_1.Schema({
 // ---------password encrioted with hash-----------
 userSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const user = this;
-        // hashing password and save into DB
+        // hashing password and save into DATABASE
         user.password = yield bcrypt_1.default.hash(user.password, Number(config_1.default.bcrypt_salt_rounds));
         next();
     });

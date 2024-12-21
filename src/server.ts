@@ -1,5 +1,5 @@
 
-import mongoose from "mongoose";
+import mongoose, { model } from "mongoose";
 import config from "./app/config";
 import app from "./app";
 
@@ -18,3 +18,4 @@ console.log(`server is running at http://localhost:${config.port}`)
     
 }
 server()
+module.exports=app;

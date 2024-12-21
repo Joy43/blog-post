@@ -30,3 +30,4 @@ function server() {
     });
 }
 server();
+module.exports = app_1.default;

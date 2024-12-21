@@ -24,7 +24,7 @@ const globalErrorHandler = (err, req, res, next) => {
     ];
     if (err instanceof zod_1.ZodError) {
         const simplifiedError = (0, handleZodError_1.default)(err);
-        statusCode = (_a = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode) !== null && _a !== void 0 ? _a : 500; // Ensure fallback to 500
+        statusCode = (_a = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode) !== null && _a !== void 0 ? _a : 500;
         message = (_b = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message) !== null && _b !== void 0 ? _b : 'Validation error';
         errorSources = (_c = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources) !== null && _c !== void 0 ? _c : errorSources;
     }
