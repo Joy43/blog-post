@@ -1,4 +1,5 @@
 import AppError from "../../errors/AppError";
+import { User } from "../user/user.model";
 import { Tblog } from "./blog.interface";
 import Blog from "./blog.model";
 import httpStatus from "http-status-codes";
@@ -17,8 +18,9 @@ type AuthorType = {
     status?: string;
 };
 
-// Create blog
+// -------------Create blog---------
 const createBlog = async (payload: Tblog) => {
+
     const result = await Blog.create(payload);
     const populatedBlog = await Blog.findById(result._id).populate("author");
     return populatedBlog;

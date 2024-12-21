@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { TUser } from "./user.interface";
 import config from "../../config";
 import bcrypt from 'bcrypt';
@@ -60,4 +60,7 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
-export const User=model<TUser>('User',userSchema);
+export const User=mongoose.model<TUser>(
+'User',
+userSchema
+)

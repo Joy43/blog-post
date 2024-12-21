@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import { Tblog } from './blog.interface';
 
+
 const blogSchema = new Schema<Tblog>(
     {
         title: {
@@ -15,7 +16,7 @@ const blogSchema = new Schema<Tblog>(
         },
         author: {
             type: Schema.Types.ObjectId,
-            ref: "User",
+            ref: 'User',
             required: true,
         },
         

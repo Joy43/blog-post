@@ -30,7 +30,7 @@ $ npm install
 * update blog
     * On Postman (patch method):
         ```bash
-       https://blogsproject-fawn.vercel.app/67667c29b0386fc44d20d70e
+       https://blogsproject-fawn.vercel.app/api/blogs/6766c27474f63c714ba7e831
         ```
 
 * Delete blog with user
