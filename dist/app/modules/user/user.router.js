@@ -12,6 +12,7 @@ const auth_1 = __importDefault(require("../middlewares/auth"));
 const user_contant_1 = require("./user.contant");
 const router = express_1.default.Router();
 router.post('/user-create', (0, validateRequest_1.default)(user_validation_1.UserValidation.userValidationSchema), user_controller_1.userController.createUser);
+router.post('/create-admin', (0, validateRequest_1.default)(user_validation_1.UserValidation.userValidationSchema), user_controller_1.userController.createUser);
 router.get('/', user_controller_1.userController.getUser);
 router.get('/:userId', user_controller_1.userController.getSingleUser);
 router.put('/:userId', user_controller_1.userController.updateUser);

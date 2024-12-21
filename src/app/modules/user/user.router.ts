@@ -10,7 +10,7 @@ router.post(
    validateRequest(UserValidation.userValidationSchema),
    userController.createUser
 )
-
+router.post('/create-admin', validateRequest(UserValidation.userValidationSchema), userController.createUser)
 router.get('/',userController.getUser)
 router.get('/:userId', userController.getSingleUser)
 router.put('/:userId', userController.updateUser)

@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userService = void 0;
 const user_model_1 = require("./user.model");
 const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    payload.role = 'admin';
+    payload.role = 'user';
     const result = yield user_model_1.User.create(payload);
     return result;
 });

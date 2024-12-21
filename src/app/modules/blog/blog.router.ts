@@ -7,7 +7,7 @@ import { USER_ROLE } from "../user/user.contant";
 
 const router=Router()
 // ------crate all blog------
-router.post('/create-blog',auth(USER_ROLE.user),validateRequest(blogValidation.createBlogValidationSchema), blogController.createBlog)
+router.post('/',auth(USER_ROLE.user),validateRequest(blogValidation.createBlogValidationSchema), blogController.createBlog)
 
 // ------get all blog-----
 router.get('/',blogController.getAllBlogs)

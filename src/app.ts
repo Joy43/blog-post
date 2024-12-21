@@ -2,6 +2,7 @@ import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
 
 import router from './app/routes';
+import globalErrorHandler from './app/modules/middlewares/globalErrorhandler';
 
 
 
@@ -12,7 +13,7 @@ app.use(cors());
 // -----api end point--------
 app.use('/api', router);
 
-
+app.use(globalErrorHandler)
 // -----root api endpoint------
 app.get('/', (req:Request,res: Response) => {
   res.send({
@@ -20,6 +21,13 @@ app.get('/', (req:Request,res: Response) => {
     message: 'blog_post Server is running successfully 🏃🏽‍♂️➡️',
   });
 });
+
+app.use("*", (req: Request, res: Response) => {
+  res.status(404).json({
+    status: false,
+    message: 'Route not found'
+  })
+})
 
 export default app;
 
