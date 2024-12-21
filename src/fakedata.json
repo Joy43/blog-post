@@ -1,0 +1,14 @@
+[
+    {
+        "name": "towa",
+        "email": "towa@example.com",
+        "password": "towa",
+        "tokeb":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvd2FAZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTczNDc2MDExNiwiZXhwIjoxNzM2OTIwMTE2fQ.PIjOApkDCbtuEGC2TTqjzueLOwBy6ZxJ0mfVzmxpkTA"
+      },
+      {
+        "name": "joyadmin",
+        "email": "joyadmin@gmail.com",
+        "password": "jadminoy",
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpveWFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczNDc2MjQ3NCwiZXhwIjoxNzM2OTIyNDc0fQ.kImXZ201tOVkZAJyo9OQHRG_HkmO2PjxGmEFOZjOAao"
+      }
+]

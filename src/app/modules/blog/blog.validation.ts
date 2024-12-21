@@ -5,14 +5,29 @@ const createBlogValidationSchema = z.object({
         title: z.string({
         invalid_type_error: 'title must be string',
         required_error: 'title is required',
-      }).optional(),
+      }),
       content:z.string({
         invalid_type_error:'content must be string',
         required_error:'content is required',
       }),
-      academicFaculty: z.string({
-        invalid_type_error: 'Academic faculty must be string',
-        required_error: 'Faculty is required',
+      author: z.string({
+        invalid_type_error: 'author must be string',
+        required_error: 'authoris required',
       }),
     }),
   });
+
+  //  --------- update validation----------
+
+  const updateBlogValidationSchema = z.object({
+    body: z.object({
+        title: z.string().optional(),
+        content: z.string().optional(),
+    }),
+});
+
+
+  export const blogValidation={
+    createBlogValidationSchema,
+    updateBlogValidationSchema
+  }

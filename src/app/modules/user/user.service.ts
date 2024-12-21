@@ -2,7 +2,7 @@ import { TUser } from "./user.interface";
 import { User } from "./user.model";
 
 const createUser = async (payload: TUser): Promise<TUser> => {
-  payload.role = 'user';
+  payload.role = 'admin';
   const result = await User.create(payload)
 
   return result
