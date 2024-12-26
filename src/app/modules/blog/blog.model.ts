@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { Tblog } from './blog.interface';
 
 
@@ -14,11 +14,9 @@ const blogSchema = new Schema<Tblog>(
             type: String,
             required: [true, "Please provide the content of the blog"],
         },
-        author: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: true,
-        },
+        author: { type: mongoose.Schema.Types.ObjectId,
+             ref: 'User',
+              required: true },
         
         isPublished: {
             type: Boolean,

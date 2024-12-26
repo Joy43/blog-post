@@ -8,9 +8,11 @@ const register=async(req:Request,res:Response)=>{
  const result =await AuthService.register(req.body);
 
  sendResponse(res,{
-    statusCode:httpStatus.OK,
     success:true,
     message:'user is register sucessfully',
+    statusCode:httpStatus.OK,
+    
+   
     data:result
  })
 

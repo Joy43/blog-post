@@ -5,6 +5,8 @@ import sendResponse from "../utils/sendResponse";
 import { User } from "../user/user.model";
 import AppError from "../../errors/AppError";
 
+import { JwtPayload } from "jsonwebtoken";
+
 
 
 /* 
@@ -12,24 +14,36 @@ import AppError from "../../errors/AppError";
             create blog
 ______________________________
 */
+
+
 const createBlog = catchAsync(async (req, res) => {
-    console.log('test payload:', req.body);
-    
-    // ---------- author exists--------
-    const { author } = req.body;
-    const userExists = await User.findById(author);
+    console.log('Payload received:', req.body);
+
+    // Extract userId from the Authorization token
+    const user = req.user as JwtPayload; 
+    const userId = user.id;
+
+    // Check if user exists
+    const userExists = await User.findById(userId);
     if (!userExists) {
-        throw new AppError(httpStatus.FORBIDDEN, 'Invalid author: User does not exist');
+        throw new AppError(httpStatus.FORBIDDEN, 'Invalid user: User does not exist');
     }
 
-    const result = await blogService.createBlog(req.body);
+    // Merge `author` with the request body
+    const blogData = { ...req.body, author: userId };
+
+    // Create the blog
+    const result = await blogService.createBlog(blogData);
+
+    // Send response
     sendResponse(res, {
-        statusCode: httpStatus.OK,
+        statusCode: httpStatus.CREATED,
         success: true,
-        message: 'Blog post is created',
+        message: 'Blog post created successfully',
         data: result
     });
 });
+
 
 /* 
 --------------------------------

@@ -54,7 +54,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// set '' after saving password
+// after saving password
 userSchema.post('save', function (doc, next) {
   doc.password = '';
   next();
