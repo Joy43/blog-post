@@ -22,11 +22,15 @@ const login=catchAsync(async(req:Request,res:Response)=>{
     const result=await AuthService.login(req.body);
 
     sendResponse(res,{
-        statusCode:httpStatus.OK,
+       
         success:true,
         message:'login sucessfully',
-        token:result.token,
-        data:result.user,
+        statusCode:httpStatus.OK,
+        // token:result.token,
+        data: {
+            token: result.token,
+            // user: result.user,
+        },
     })
 })
 export const AuthController={

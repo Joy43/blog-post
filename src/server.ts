@@ -17,5 +17,4 @@ console.log(`server is running at http://localhost:${config.port}`)
   }
     
 }
-server()
-module.exports=app;
+server();
