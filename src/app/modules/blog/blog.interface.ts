@@ -1,11 +1,11 @@
-import  { Types } from "mongoose";
+import mongoose, { Document } from 'mongoose';
 
-
-export type Tblog={
-    id:string,
-    title:string,
-    content:string,
-    author: Types.ObjectId;
-    isPublished: boolean,
-   
+export interface TBlog extends Document {
+  title: string;
+  content: string;
+  author: mongoose.Schema.Types.ObjectId;
+  isPublished: boolean;
 }
+   
+    
+   

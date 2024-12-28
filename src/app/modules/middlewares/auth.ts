@@ -2,47 +2,41 @@ import { NextFunction, Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import catchAsync from '../utils/catchAsync';
-
 import { TUserRole } from '../user/user.interface';
-import { User } from '../user/user.model';
+import User from '../user/user.model';
 
 
 const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization;
-    // checking if the token is missing
-    if (!token) {
-      throw new Error( 'You are not authorized!');
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      throw new Error('You are not authorized!');
     }
 
-    // checking if the given token is valid
-    const decoded = jwt.verify(
-      token,
-      "secret",
-    ) as JwtPayload;
+    const token = authHeader.split(' ')[1];
+    if (!token) {
+      throw new Error('Token missing!');
+    }
 
-    console.log({decoded})
+    let decoded;
+    try {
+      decoded = jwt.verify(token, "secret");
+    } catch (error) {
+      throw new Error('Invalid token!');
+    }
 
-    const { role, email} = decoded;
+    const { role, email } = decoded as JwtPayload;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new Error('This user is not found!');
+    }
 
-    // ------checking  user  exist------------
-  const user = await User.findOne({ email });
+    if (user.status === 'blocked') {
+      throw new Error('This user is blocked!');
+    }
 
-  if (!user) {
-    throw new Error('This user is not found !')
-  }
-
-  //---------- checking user is blocked---------
-  const status = user?.status
-
-  if (status === 'blocked') {
-    throw new Error('This user is blocked ! !')
-  }
-
-    if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new Error(
-        'You are not authorized',
-      );
+    if (requiredRoles.length && !requiredRoles.includes(role)) {
+      throw new Error('You are not authorized!');
     }
 
     req.user = decoded as JwtPayload;

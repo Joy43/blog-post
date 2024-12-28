@@ -6,12 +6,19 @@
     "password": "userjoy",
     "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJqb3lAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MzQ3ODczNDYsImV4cCI6MTczNjk0NzM0Nn0.8DWzXRr546dn_3gBZihMAoHartLkHRSylTH6tRAsDv4"
   },
+  {
+    "name": "userjoy",
+   
+    "email": "block@gmail.com",
+  "password": "joy215748",
+    "token":"676f5d9c040ee4ef688fed52"
+  },
       
       {
         "name": "skadmin",
         "email": "skadmin@gmail.com",
         "password": "skadmin",
-        "to": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNrYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzM0Nzg2NTYyLCJleHAiOjE3MzY5NDY1NjJ9.a-uTBjljNrJ21CDJgXkn5NKxw9s97OJHMjp6FpLVpqU"
+        "to": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNrYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzM1MzUyMDQyLCJleHAiOjE3Mzc1MTIwNDJ9.nWFUtIinDq8sMVWH-FfLnhhm-ZFAGwDAqtKs_uCfRks"
       }
 
 ]

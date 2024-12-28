@@ -1,37 +1,13 @@
-import mongoose, { Schema, model } from "mongoose";
-import { Tblog } from './blog.interface';
-
-
-const blogSchema = new Schema<Tblog>(
-    {
-        title: {
-            type: String,
-            required: [true, "Please provide the title of the blog"],
-            set: (value: string) => value.toUpperCase(),
-            maxlength: 80,
-        },
-        content: {
-            type: String,
-            required: [true, "Please provide the content of the blog"],
-        },
-        author: { type: mongoose.Schema.Types.ObjectId,
-             ref: 'User',
-              required: true },
-        
-        isPublished: {
-            type: Boolean,
-            default: true,
-        },
-       
-    },
-   /* 
-     Automatically adds `createdAt` and `updatedAt` fields
-   */
-    {
-        timestamps: true, 
-    }
+import mongoose, { Schema } from "mongoose";
+import { TBlog } from "./blog.interface";
+const blogSchema = new Schema<TBlog>(
+  {
+    title: { type: String, required: true, maxlength: 100 },
+    content: { type: String, required: true, minlength: 10 },
+    author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    isPublished: { type: Boolean, default: true },
+  },
+  { timestamps: true }
 );
-
-// Export the model for access another component
-const Blog = model<Tblog>("Blog", blogSchema);
-export default Blog;
+  
+  export default mongoose.model<TBlog>('Blog', blogSchema);

@@ -1,10 +1,11 @@
 import AppError from "../../errors/AppError";
 import { TUser } from "../user/user.interface";
-import { User } from "../user/user.model";
+
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import httpStatus from 'http-status-codes';
+import User from "../user/user.model";
 
 // ---------- register-------
 const register=async(payload:TUser)=>{
@@ -13,7 +14,7 @@ return result;
 }
 /* 
 #######-----------------------------######
-            login
+        login
 #####--------------------------------#######
 */
 const login = async (payload: { email: string; password: string }) => {
@@ -32,9 +33,9 @@ const login = async (payload: { email: string; password: string }) => {
     }
   
   /* 
-  ----------------
+  --------------------------
   checking  password  correct
-  ---------------------
+  -----------------------------
   */
     const isPasswordMatched = await bcrypt.compare(
       payload?.password,
@@ -50,13 +51,15 @@ const login = async (payload: { email: string; password: string }) => {
 create token and sent to the  client
 ----------------------------------------
 */
-    const jwtPayload = {
-      email: user?.email,
-      role: user?.role,
-    }
+const jwtPayload = {
+  _id: user._id.toString(),
+  email: user.email,
+  role: user.role,
+};
   
     const token = jwt.sign(jwtPayload, "secret", { expiresIn: '25d' });
-  
+    console.log('Token in Auth Middleware:', token);
+    
     return {token, user};
   }
 export const AuthService={

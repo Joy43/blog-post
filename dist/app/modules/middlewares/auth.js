@@ -14,20 +14,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
-const user_model_1 = require("../user/user.model");
+const user_model_1 = __importDefault(require("../user/user.model"));
 const auth = (...requiredRoles) => {
     return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const token = req.headers.authorization;
-        // checking if the token is missing
+        // ----------- checking if the token is missing -------------
         if (!token) {
             throw new Error('You are not authorized!');
         }
-        // checking if the given token is valid
+        // ------------- checking if the given token is valid --------------
         const decoded = jsonwebtoken_1.default.verify(token, "secret");
         console.log({ decoded });
         const { role, email } = decoded;
         // ------checking  user  exist------------
-        const user = yield user_model_1.User.findOne({ email });
+        const user = yield user_model_1.default.findOne({ email });
         if (!user) {
             throw new Error('This user is not found !');
         }

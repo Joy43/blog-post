@@ -60,7 +60,5 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
-export const User=mongoose.model<TUser>(
-'User',
-userSchema
-)
+const User = model<TUser>('User', userSchema)
+export default User;

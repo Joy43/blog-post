@@ -13,12 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.adminService = void 0;
-const user_model_1 = require("../user/user.model");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const blog_model_1 = __importDefault(require("../blog/blog.model"));
+const user_model_1 = __importDefault(require("../user/user.model"));
 const blockUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.User.findById(userId);
+    const user = yield user_model_1.default.findById(userId);
     if (!user) {
         throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "User not found");
     }

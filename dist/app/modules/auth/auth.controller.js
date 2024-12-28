@@ -21,9 +21,9 @@ const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthService.register(req.body);
     (0, sendResponse_1.default)(res, {
-        statusCode: http_status_codes_1.default.OK,
         success: true,
         message: 'user is register sucessfully',
+        statusCode: http_status_codes_1.default.OK,
         data: result
     });
 });
@@ -31,11 +31,12 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const login = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthService.login(req.body);
     (0, sendResponse_1.default)(res, {
-        statusCode: http_status_codes_1.default.OK,
         success: true,
         message: 'login sucessfully',
-        token: result.token,
-        data: result.user,
+        statusCode: http_status_codes_1.default.OK,
+        data: {
+            token: result.token,
+        },
     });
 }));
 exports.AuthController = {

@@ -12,10 +12,6 @@ const createBlogValidationSchema = zod_1.z.object({
             invalid_type_error: 'content must be string',
             required_error: 'content is required',
         }),
-        author: zod_1.z.string({
-            invalid_type_error: 'author must be string',
-            required_error: 'authoris required',
-        }),
     }),
 });
 //  --------- update validation----------

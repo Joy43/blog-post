@@ -17,26 +17,33 @@ const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const blog_service_1 = require("./blog.service");
 const sendResponse_1 = __importDefault(require("../utils/sendResponse"));
-const user_model_1 = require("../user/user.model");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
+const user_model_1 = __importDefault(require("../user/user.model"));
+;
 /*
---------------------------------
+------]]-----------------------]]---
             create blog
-______________________________
+__]]__________________________]]__
 */
 const createBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('test payload:', req.body);
-    // ---------- author exists--------
-    const { author } = req.body;
-    const userExists = yield user_model_1.User.findById(author);
+    console.log('Payload received:', req.body);
+    // Extract userId from the Authorization token
+    const user = req.user;
+    const userId = user.id;
+    // Check if user exists
+    const userExists = yield user_model_1.default.findById(userId);
     if (!userExists) {
-        throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, 'Invalid author: User does not exist');
+        throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, 'Invalid user: User does not exist');
     }
-    const result = yield blog_service_1.blogService.createBlog(req.body);
+    // ---------
+    const blogData = Object.assign(Object.assign({}, req.body), { author: userId });
+    // Create the blog
+    const result = yield blog_service_1.blogService.createBlog(blogData);
+    // Send response
     (0, sendResponse_1.default)(res, {
-        statusCode: http_status_codes_1.default.OK,
+        statusCode: http_status_codes_1.default.CREATED,
         success: true,
-        message: 'Blog post is created',
+        message: 'Blog post created successfully',
         data: result
     });
 }));
@@ -60,7 +67,8 @@ const getAllBlogs = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
 ______________________________
 */
 const deleteBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params; // Extract the blog ID from the URL params
+    // Extract the blog ID from the URL params
+    const { id } = req.params;
     const result = yield blog_service_1.blogService.deleteBlogFromDB(id);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_codes_1.default.OK,
@@ -70,9 +78,9 @@ const deleteBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 /*
-
+-------------------------
 update
-
+-----------------------------------
 */
 const updateblog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;

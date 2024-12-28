@@ -13,23 +13,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogService = void 0;
-const AppError_1 = __importDefault(require("../../errors/AppError"));
 const blog_model_1 = __importDefault(require("./blog.model"));
+const AppError_1 = __importDefault(require("../../errors/AppError"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
-// Create blog
+// -----------------Create Blog -----------------------
 const createBlog = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield blog_model_1.default.create(payload);
-    const populatedBlog = yield blog_model_1.default.findById(result._id).populate("author");
-    return populatedBlog;
+    return blog_model_1.default.findById(result._id).populate('author');
 });
-// Get all blogs
+// Get All Blogs
 const getAllBlogsfromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const { search, sortBy, sortOrder, author } = query;
     const queryObj = {};
     if (search) {
         queryObj.$or = [
             { title: { $regex: search, $options: "i" } },
-            { content: { $regex: search, $options: "i" } },
+            { content: { $regex: search, $options: "i" } }
         ];
     }
     if (author) {
@@ -39,42 +38,35 @@ const getAllBlogsfromDB = (query) => __awaiter(void 0, void 0, void 0, function*
     if (sortBy) {
         sortObj[sortBy] = sortOrder === "desc" ? -1 : 1;
     }
-    const result = yield blog_model_1.default.find(queryObj)
-        .sort(sortObj)
-        .populate("author", "name email");
-    return result;
+    return blog_model_1.default.find(queryObj).sort(sortObj).populate("author", "name email");
 });
-// Delete blog
+// Delete Blog
 const deleteBlogFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blog_model_1.default.findById(id).populate("author");
     if (!blog) {
-        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Blog not found");
+        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Blog not found.");
     }
     const author = blog.author;
     if (author.status === "blocked") {
-        throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, "This user is blocked!");
+        throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, "This user is blocked.");
     }
-    const result = yield blog_model_1.default.findByIdAndDelete(id);
-    return result;
+    return blog_model_1.default.findByIdAndDelete(id);
 });
-// Update blog
+// Update Blog
 const updateBlogIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blog_model_1.default.findById(id).populate("author", "status");
     if (!blog) {
-        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Blog not found");
+        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Blog not found.");
     }
     const author = blog.author;
     if (author.status === "blocked") {
-        throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, "This user's status is blocked. Updates are not allowed.");
+        throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, "Updates not allowed: User is blocked.");
     }
-    const result = yield blog_model_1.default.findOneAndUpdate({ _id: id }, payload, {
-        new: true,
-    }).populate("author", "name email");
-    return result;
+    return blog_model_1.default.findOneAndUpdate({ _id: id }, payload, { new: true }).populate("author", "name email");
 });
 exports.blogService = {
     createBlog,
     getAllBlogsfromDB,
     deleteBlogFromDB,
-    updateBlogIntoDB,
+    updateBlogIntoDB
 };

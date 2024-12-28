@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
 const mongoose_1 = require("mongoose");
 const config_1 = __importDefault(require("../../config"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -59,9 +58,10 @@ userSchema.pre('save', function (next) {
         next();
     });
 });
-// set '' after saving password
+// after saving password
 userSchema.post('save', function (doc, next) {
     doc.password = '';
     next();
 });
-exports.User = (0, mongoose_1.model)('User', userSchema);
+const User = (0, mongoose_1.model)('User', userSchema);
+exports.default = User;

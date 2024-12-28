@@ -1,7 +1,9 @@
-import { Tblog } from "./blog.interface";
+
 import Blog from "./blog.model";
 import AppError from "../../errors/AppError";
 import httpStatus from 'http-status-codes';
+import { TBlog } from './blog.interface';
+
 
 type QueryParams = {
     search?: string;
@@ -18,13 +20,14 @@ type AuthorType = {
 };
 
 // -----------------Create Blog -----------------------
-const createBlog = async (payload: Tblog) => {
-    const result = await Blog.create(payload);
-    return Blog.findById(result._id).populate('author');
-};
+const createBlog = async (payload: TBlog) => {
+    const blog = await Blog.create(payload);
+    return Blog.findById(blog._id).populate('author');
+  };
 
 
-// Get All Blogs
+
+//---------------- Get All Blogs ----------------
 const getAllBlogsfromDB = async (query: QueryParams) => {
     const { search, sortBy, sortOrder, author } = query;
 
@@ -63,7 +66,7 @@ const deleteBlogFromDB = async (id: string) => {
 };
 
 // Update Blog
-const updateBlogIntoDB = async (id: string, payload: Partial<Tblog>) => {
+const updateBlogIntoDB = async (id: string, payload: Partial<TBlog>) => {
     const blog = await Blog.findById(id).populate("author", "status");
 
     if (!blog) {

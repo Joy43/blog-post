@@ -1,7 +1,8 @@
-import { User } from "../user/user.model";
+
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status-codes";
 import Blog from "../blog/blog.model";
+import User from "../user/user.model";
 
 const blockUser = async (userId: string) => {
     const user = await User.findById(userId);

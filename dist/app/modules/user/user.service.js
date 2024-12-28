@@ -8,30 +8,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userService = void 0;
-const user_model_1 = require("./user.model");
+const user_model_1 = __importDefault(require("./user.model"));
 const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     payload.role = 'user';
-    const result = yield user_model_1.User.create(payload);
+    const result = yield user_model_1.default.create(payload);
     return result;
 });
 const getUser = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.User.find();
+    const result = yield user_model_1.default.find();
     return result;
 });
 const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.User.findById(id);
+    const result = yield user_model_1.default.findById(id);
     return result;
 });
 const updateUser = (id, data) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.User.findByIdAndUpdate(id, data, {
+    const result = yield user_model_1.default.findByIdAndUpdate(id, data, {
         new: true,
     });
     return result;
 });
 const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.User.findByIdAndDelete(id);
+    const result = yield user_model_1.default.findByIdAndDelete(id);
     return result;
 });
 exports.userService = {

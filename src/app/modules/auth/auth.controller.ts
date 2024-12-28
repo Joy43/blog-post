@@ -11,14 +11,12 @@ const register=async(req:Request,res:Response)=>{
     success:true,
     message:'user is register sucessfully',
     statusCode:httpStatus.OK,
-    
-   
     data:result
  })
 
 }
 
-// ---------------- login------
+// ---------------- login ------
 
 const login=catchAsync(async(req:Request,res:Response)=>{
     const result=await AuthService.login(req.body);
@@ -28,10 +26,10 @@ const login=catchAsync(async(req:Request,res:Response)=>{
         success:true,
         message:'login sucessfully',
         statusCode:httpStatus.OK,
-        // token:result.token,
+    
         data: {
             token: result.token,
-            // user: result.user,
+            
         },
     })
 })
