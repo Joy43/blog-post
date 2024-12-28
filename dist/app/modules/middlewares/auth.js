@@ -17,27 +17,31 @@ const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const user_model_1 = __importDefault(require("../user/user.model"));
 const auth = (...requiredRoles) => {
     return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        const token = req.headers.authorization;
-        // ----------- checking if the token is missing -------------
-        if (!token) {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
             throw new Error('You are not authorized!');
         }
-        // ------------- checking if the given token is valid --------------
-        const decoded = jsonwebtoken_1.default.verify(token, "secret");
-        console.log({ decoded });
+        const token = authHeader.split(' ')[1];
+        if (!token) {
+            throw new Error('Token missing!');
+        }
+        let decoded;
+        try {
+            decoded = jsonwebtoken_1.default.verify(token, "secret");
+        }
+        catch (error) {
+            throw new Error('Invalid token!');
+        }
         const { role, email } = decoded;
-        // ------checking  user  exist------------
         const user = yield user_model_1.default.findOne({ email });
         if (!user) {
-            throw new Error('This user is not found !');
+            throw new Error('This user is not found!');
         }
-        //---------- checking user is blocked---------
-        const status = user === null || user === void 0 ? void 0 : user.status;
-        if (status === 'blocked') {
-            throw new Error('This user is blocked ! !');
+        if (user.status === 'blocked') {
+            throw new Error('This user is blocked!');
         }
-        if (requiredRoles && !requiredRoles.includes(role)) {
-            throw new Error('You are not authorized');
+        if (requiredRoles.length && !requiredRoles.includes(role)) {
+            throw new Error('You are not authorized!');
         }
         req.user = decoded;
         next();

@@ -18,17 +18,17 @@ const AppError_1 = __importDefault(require("../../errors/AppError"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 // -----------------Create Blog -----------------------
 const createBlog = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield blog_model_1.default.create(payload);
-    return blog_model_1.default.findById(result._id).populate('author');
+    const blog = yield blog_model_1.default.create(payload);
+    return blog_model_1.default.findById(blog._id).populate('author');
 });
-// Get All Blogs
+//---------------- Get All Blogs ----------------
 const getAllBlogsfromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const { search, sortBy, sortOrder, author } = query;
     const queryObj = {};
     if (search) {
         queryObj.$or = [
             { title: { $regex: search, $options: "i" } },
-            { content: { $regex: search, $options: "i" } }
+            { content: { $regex: search, $options: "i" } },
         ];
     }
     if (author) {
@@ -38,9 +38,12 @@ const getAllBlogsfromDB = (query) => __awaiter(void 0, void 0, void 0, function*
     if (sortBy) {
         sortObj[sortBy] = sortOrder === "desc" ? -1 : 1;
     }
-    return blog_model_1.default.find(queryObj).sort(sortObj).populate("author", "name email");
+    console.log("Query Object:", queryObj);
+    const blogs = yield blog_model_1.default.find(queryObj).sort(sortObj).populate("author", "name email");
+    console.log("Blogs Retrieved:", blogs);
+    return blogs;
 });
-// Delete Blog
+//------------- Delete Blog----------------
 const deleteBlogFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blog_model_1.default.findById(id).populate("author");
     if (!blog) {

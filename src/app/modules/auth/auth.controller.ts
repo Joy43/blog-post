@@ -10,7 +10,7 @@ const register=async(req:Request,res:Response)=>{
  sendResponse(res,{
     success:true,
     message:'user is register sucessfully',
-    statusCode:httpStatus.OK,
+    statusCode:201,
     data:result
  })
 

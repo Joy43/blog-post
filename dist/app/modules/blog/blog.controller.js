@@ -14,46 +14,41 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogController = void 0;
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
-const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const blog_service_1 = require("./blog.service");
 const sendResponse_1 = __importDefault(require("../utils/sendResponse"));
 const AppError_1 = __importDefault(require("../../errors/AppError"));
-const user_model_1 = __importDefault(require("../user/user.model"));
-;
+const http_status_codes_1 = __importDefault(require("http-status-codes"));
 /*
 ------]]-----------------------]]---
             create blog
 __]]__________________________]]__
 */
 const createBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('Payload received:', req.body);
-    // Extract userId from the Authorization token
     const user = req.user;
-    const userId = user.id;
-    // Check if user exists
-    const userExists = yield user_model_1.default.findById(userId);
-    if (!userExists) {
-        throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, 'Invalid user: User does not exist');
+    const userId = user._id;
+    if (!userId) {
+        res.status(401).json({ success: false, message: 'User ID missing in token' });
+        return;
     }
-    // ---------
     const blogData = Object.assign(Object.assign({}, req.body), { author: userId });
-    // Create the blog
-    const result = yield blog_service_1.blogService.createBlog(blogData);
-    // Send response
+    const blog = yield blog_service_1.blogService.createBlog(blogData);
     (0, sendResponse_1.default)(res, {
-        statusCode: http_status_codes_1.default.CREATED,
+        statusCode: 201,
         success: true,
-        message: 'Blog post created successfully',
-        data: result
+        message: 'Blog created successfully',
+        data: blog,
     });
+    return;
 }));
 /*
---------------------------------
+---------------------------
             all blogs
-______________________________
+___________________________
 */
 const getAllBlogs = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Query Parameters:", req.query);
     const blogs = yield blog_service_1.blogService.getAllBlogsfromDB(req.query);
+    console.log("Fetched Blogs:", blogs);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_codes_1.default.OK,
         success: true,
@@ -78,13 +73,13 @@ const deleteBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 /*
--------------------------
-update
+-------------------------------------
+ ---------     update ---------
 -----------------------------------
 */
 const updateblog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    // Validate the payload (optional, if not already handled by middleware)
+    // 
     const { title, content } = req.body;
     if (!title && !content) {
         throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, "At least one field (title or content) is required");

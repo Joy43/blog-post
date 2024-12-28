@@ -18,48 +18,50 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const user_model_1 = __importDefault(require("../user/user.model"));
-// Register User
+// ---------- register-------
 const register = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    // Hash the password before storing
-    const hashedPassword = yield bcrypt_1.default.hash(payload.password, 10);
-    const result = yield user_model_1.default.create(Object.assign(Object.assign({}, payload), { password: hashedPassword }));
+    const result = yield user_model_1.default.create(payload);
     return result;
 });
-// Login User
+/*
+#######-----------------------------######
+        login
+#####--------------------------------#######
+*/
 const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    // Check if user exists
-    const user = yield user_model_1.default.findOne({ email: payload === null || payload === void 0 ? void 0 : payload.email }).select("+password");
+    // checking user is exist
+    const user = yield user_model_1.default.findOne({ email: payload === null || payload === void 0 ? void 0 : payload.email }).select('+password');
     if (!user) {
-        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "User not found!");
+        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, 'This user is not found !');
     }
-    // Check if user is blocked
-    if (user.status === "blocked") {
-        throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, "User is blocked!");
+    // checking if the user is blocked
+    const status = user === null || user === void 0 ? void 0 : user.status;
+    if (status === 'blocked') {
+        throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, 'This user is blocked !');
     }
-    // Validate password
-    const isPasswordMatched = yield bcrypt_1.default.compare(payload.password, user.password);
+    /*
+    --------------------------
+    checking  password  correct
+    -----------------------------
+    */
+    const isPasswordMatched = yield bcrypt_1.default.compare(payload === null || payload === void 0 ? void 0 : payload.password, user === null || user === void 0 ? void 0 : user.password);
     if (!isPasswordMatched) {
-        throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, "Incorrect password!");
+        throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, 'Wrong Password 😈! provide correct password ');
     }
-    // Create JWT
+    /*
+    ---------------------------------------
+    create token and sent to the  client
+    ----------------------------------------
+    */
     const jwtPayload = {
-        id: user._id,
+        _id: user._id.toString(),
         email: user.email,
         role: user.role,
     };
-    const token = jsonwebtoken_1.default.sign(jwtPayload, process.env.JWT_SECRET, { expiresIn: "25d" });
-    // Return token and user data
-    return {
-        token,
-        user: {
-            id: user._id,
-            email: user.email,
-            role: user.role,
-            status: user.status,
-        },
-    };
+    const token = jsonwebtoken_1.default.sign(jwtPayload, "secret", { expiresIn: '25d' });
+    console.log('Token in Auth Middleware:', token);
+    return { token, user };
 });
 exports.AuthService = {
-    register,
-    login,
+    register, login
 };

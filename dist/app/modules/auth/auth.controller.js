@@ -23,11 +23,11 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     (0, sendResponse_1.default)(res, {
         success: true,
         message: 'user is register sucessfully',
-        statusCode: http_status_codes_1.default.OK,
+        statusCode: 201,
         data: result
     });
 });
-// ---------------- login------
+// ---------------- login ------
 const login = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthService.login(req.body);
     (0, sendResponse_1.default)(res, {
