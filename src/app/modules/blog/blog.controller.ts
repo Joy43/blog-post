@@ -41,7 +41,9 @@ const createBlog = catchAsync(async (req, res) => {
 ___________________________
 */
 const getAllBlogs = catchAsync(async (req, res) => {
+    console.log("Query Parameters:", req.query);  
     const blogs = await blogService.getAllBlogsfromDB(req.query);
+    console.log("Fetched Blogs:", blogs);  
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -49,6 +51,7 @@ const getAllBlogs = catchAsync(async (req, res) => {
         data: blogs,
     });
 });
+
 
 /* 
 --------------------------------

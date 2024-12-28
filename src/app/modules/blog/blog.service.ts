@@ -30,12 +30,11 @@ const createBlog = async (payload: TBlog) => {
 //---------------- Get All Blogs ----------------
 const getAllBlogsfromDB = async (query: QueryParams) => {
     const { search, sortBy, sortOrder, author } = query;
-
     const queryObj: Record<string, unknown> = {};
     if (search) {
         queryObj.$or = [
             { title: { $regex: search, $options: "i" } },
-            { content: { $regex: search, $options: "i" } }
+            { content: { $regex: search, $options: "i" } },
         ];
     }
     if (author) {
@@ -47,10 +46,14 @@ const getAllBlogsfromDB = async (query: QueryParams) => {
         sortObj[sortBy] = sortOrder === "desc" ? -1 : 1;
     }
 
-    return Blog.find(queryObj).sort(sortObj).populate("author", "name email");
+    console.log("Query Object:", queryObj);  
+    const blogs = await Blog.find(queryObj).sort(sortObj).populate("author", "name email");
+    console.log("Blogs Retrieved:", blogs);  
+    return blogs;
 };
 
-// Delete Blog
+
+//------------- Delete Blog----------------
 const deleteBlogFromDB = async (id: string) => {
     const blog = await Blog.findById(id).populate("author");
     if (!blog) {
